@@ -16,4 +16,14 @@ class BaseApiClient:
         response = self.request.post(url, data=data)
         return response
         
+    def put(self, endpoint,data=None):
+        url = f"{self.base_url}{endpoint}"
+        print(f"PUTTING TO: {url}") 
+        response = self.request.put(url, data=data)
+        return response
+    
+    def delete(self, endpoint, data=None):
+        response = self.request.delete(f"{self.base_url}{endpoint}", data=data)
+        return response
+    
     

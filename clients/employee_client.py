@@ -26,3 +26,21 @@ class EmployeeApiClient(BaseApiClient):
         }
 
         return self.post(self.ENDPOINT, data = payload)
+    
+
+    def update_employee(self, first_name="", last_name="", employee_id="", emp_picture=None):
+        payload = {
+            "firstName": first_name,
+            "lastName": last_name,
+            "employeeId": employee_id,
+        }
+        endpoint = f"{self.ENDPOINT}/{emp_number}"
+        return self.put(endpoint, data=payload)
+    
+    def delete_employee(self, emp_numbers: list):
+        payload = {
+        "ids": emp_numbers,
+        }
+
+        return self.delete(self.ENDPOINT, data=payload)
+    
