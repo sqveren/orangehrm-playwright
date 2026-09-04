@@ -9,5 +9,11 @@ class BaseApiClient:
     def get(self, endpoint, **kwargs):
         response = self.request.get(f"{self.base_url}{endpoint}", **kwargs)
         return response
+    
+    def post(self, endpoint, data=None):
+        url = f"{self.base_url}{endpoint}"
+        print(f"POSTING TO: {url}") 
+        response = self.request.post(url, data=data)
+        return response
         
     
