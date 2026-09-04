@@ -1,0 +1,44 @@
+name: Playwright Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:  # дозволяє запускати вручну з вкладки Actions на GitHub
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Install Playwright browsers
+        run: |
+          playwright install --with-deps chromium
+
+      - name: Run tests
+        env:
+          ORANGEHRM_USERNAME: ${{ secrets.ORANGEHRM_USERNAME }}
+          ORANGEHRM_PASSWORD: ${{ secrets.ORANGEHRM_PASSWORD }}
+          ORANGEHRM_BASE_URL: ${{ secrets.ORANGEHRM_BASE_URL }}
+        run: |
+          pytest --alluredir=allure-results
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results

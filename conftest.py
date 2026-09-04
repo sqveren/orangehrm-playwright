@@ -8,7 +8,8 @@ load_dotenv()
 
 @pytest.fixture(scope="session")
 def authenticated_state(playwright):
-    browser = playwright.chromium.launch(headless=False)
+    is_ci = os.getenv("CI", "false").lower() == "true"
+    browser = playwright.chromium.launch(headless=is_ci)
     context = browser.new_context()
 
     login_page = LoginPage(context.new_page())
