@@ -105,6 +105,7 @@ def test_create_employee_edge_cases(employee_api: EmployeeApiClient, first_name,
     )
     print(f"Input length {len(first_name)}: '{first_name[:20]}...' -> Status: {response.status}")
 
+    assert response.status == expected_status_code
     if response.status == 200:
         data = response.json()["data"]
         employee_api.delete_employee([data["empNumber"]])
