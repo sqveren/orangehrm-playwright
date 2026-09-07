@@ -3,11 +3,18 @@ import pytest
 import allure
 from clients.employee_client import EmployeeApiClient
 
+@allure.feature("Employee Management")
+@allure.severity(allure.severity_level.NORMAL)
+@allure.story("Get employees")
+@allure.title("Test getting employees list")
 def test_get_employees(employee_api: EmployeeApiClient):
     response = employee_api.get_employees()
     assert response.status == 200
 
-
+@allure.feature("Employee Management")
+@allure.severity(allure.severity_level.CRITICAL)
+@allure.story("Create employee")
+@allure.title("Test creating a new employee")
 def test_create_employee(employee_api: EmployeeApiClient):
     with allure.step("Create a new employee"):
         unique_id = str(random.randint(10000, 99999))
@@ -24,7 +31,10 @@ def test_create_employee(employee_api: EmployeeApiClient):
         assert data["lastName"] == "User"
         assert "empNumber" in data
 
-
+@allure.feature("Employee Management")
+@allure.severity(allure.severity_level.CRITICAL)
+@allure.story("Update employee")
+@allure.title("Test updating an existing employee")
 def test_update_employee(employee_api: EmployeeApiClient):
     unique_id = str(random.randint(10000, 99999))
     created_employee_response = employee_api.create_employee(
@@ -47,7 +57,10 @@ def test_update_employee(employee_api: EmployeeApiClient):
 
     employee_api.delete_employee([emp_number])
 
-
+@allure.feature("Employee Management")
+@allure.severity(allure.severity_level.CRITICAL)
+@allure.story("Create employee")
+@allure.title("Create employee with valid data")
 @pytest.mark.parametrize("first_name, last_name", [
     ("John", "Doe"),
     ("Jane", "Smith"),
@@ -72,7 +85,10 @@ def test_create_employee_parametrized(employee_api: EmployeeApiClient, first_nam
 
     employee_api.delete_employee([data["empNumber"]])
 
-
+@allure.feature("Employee Management")
+@allure.severity(allure.severity_level.NORMAL)
+@allure.story("Create employee")
+@allure.title("Test creating employee with edge case first names")
 @pytest.mark.parametrize("first_name, expected_status_code",[
     ("A"*29, 200),
     ("A" * 30,200 ),
